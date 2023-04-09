@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="HandheldFriendly" content="True" />
+	<title>{{videos.0.snippet.channelTitle}} 動画一覧</title>
+	<link rel="icon" href="favicon.ico" type="image/png">
+	<style>
+	.main {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.video {
+		margin: 5px;
+		width: {{videos.0.snippet.thumbnails.medium.width}}px;
+	}
+	</style>
+</head>
+
+<body>
+	<header>
+		<h1>{{videos.0.snippet.channelTitle}} 動画一覧</h1>
+	</header>
+    <main class="main">
+	{% for video in videos %}
+	<div class="video">
+		<a href="{{video.id.videoId|video-url}}"><img src="{{video.snippet.thumbnails.medium.url}}" alt="{{video.snippet.title}}"></a><br>
+		<a href="{{video.id.videoId|video-url}}">{{video.snippet.title}}</a><br>
+		公開日時：{{video.snippet.publishedAt}}
+    </div>
+	{% endfor %}
+    </main>
+	<footer>
+	</footer>
+</body>
+
+</html>
