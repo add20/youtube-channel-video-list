@@ -1,11 +1,10 @@
 (ns youtube.fetch
-  (:require
-   [youtube.config :as config]
-   [clojure.string :as str]
-   [clj-http.client :as http]
-   [cheshire.core :as json]
-   [clj-time.core :as t]
-   [clj-time.format :as f]))
+  (:require [cheshire.core :as json]
+            [clj-http.client :as http]
+            [clj-time.core :as t]
+            [clj-time.format :as f]
+            [clojure.string :as str]
+            [youtube.config :as config]))
 
 (defn json-read-str [json-str]
   (json/parse-string json-str true))
@@ -59,10 +58,8 @@
        (f/unparse (f/formatter "HH:mm:ss") date)
        "Z"))
 
-;; (def register-date (t/date-time 2022 6 1 0 0 0))
-
 (def days (let [s (->> (t/now)
-                       (iterate #(t/minus %1 (t/months 1)))
+                       (iterate #(t/minus %1 (t/months config/interval-month)))
                        (take-while #(t/after? %1 config/register-date)))
                 v (conj (into [] s) config/register-date)]
             (map format-date v)))

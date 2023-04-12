@@ -1,13 +1,15 @@
 (ns youtube.core
-  (:require [youtube.config :as config]
+  (:require [clojure.java.io :as io]
+            [clojure.tools.cli :refer [parse-opts]]
+            [youtube.config :as config]
             [youtube.fetch :as fetch]
-            [youtube.view :as view]
-            [clojure.java.io :as io]
-            [clojure.tools.cli :refer [parse-opts]])
+            [youtube.db :as db]
+            [youtube.view :as view])
   (:gen-class))
 
 (def cli-options
   [["-f" "--fetch" "fetch YouTube data"]
+   ["-l" "--load" "load YouTube json data to sqlite database"]
    ["-g" "--generate-html" "generate html file"]
    ["-h" "--help"]])
 
@@ -30,6 +32,10 @@
   (when (get-in @options [:options :fetch])
     (println "fetch YouTube data.")
     (fetch/load-videos))
+
+  (when (get-in @options [:options :load])
+    (println "load YouTube data into sqlite database.")
+    (db/load-all-videos))
 
   (when (get-in @options [:options :generate-html])
     (println "generate YouTube channel video HTML.")
