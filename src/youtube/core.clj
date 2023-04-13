@@ -1,9 +1,10 @@
 (ns youtube.core
   (:require [clojure.java.io :as io]
+            [clojure.java.shell :as sh]
             [clojure.tools.cli :refer [parse-opts]]
             [youtube.config :as config]
-            [youtube.fetch :as fetch]
             [youtube.db :as db]
+            [youtube.fetch :as fetch]
             [youtube.view :as view])
   (:gen-class))
 
@@ -28,6 +29,8 @@
 
   (.mkdirs (io/file config/work-dir))
   (.mkdirs (io/file config/log-dir))
+  (when-not (.exists (io/file config/sqlite-file))
+    (sh/sh "bash" "-c" (str "cat resources/table.sql | sqlite3 " config/sqlite-file)))
 
   (when (get-in @options [:options :fetch])
     (println "fetch YouTube data.")

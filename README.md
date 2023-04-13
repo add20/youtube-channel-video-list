@@ -13,7 +13,14 @@ $ cd youtube-channel-video-list
 $ bash resources/setup.sh
 ```
 
-設定ファイル`.lein-env`を用意します。`:api-key`にYouTubeのAPI Keyを書きます。`:channel-id`に検索したいYouTubeチャンネルのチャンネルIDを書きます。`:register-date`にチャンネル登録日を書きます。`:interval-month`に動画情報を一度に取得する期間（月）で指定します。
+設定ファイル`.lein-env`を用意します。
+
+- `:api-key`にYouTubeのAPI Keyを書きます。
+- `:channel-id`に検索したいYouTubeチャンネルのチャンネルIDを書きます。
+- `:latest-date`には現在日時を表す"now"か取得する動画期間の終了日時を書きます。フォーマットは、"yyyy/MM/dd HH:mm:ss"です。
+- `:register-date`にはチャンネル登録日を書きます。もしくは、取得する動画期間の開始日を書きます。フォーマットは、"yyyy/MM/dd"です。
+- `:interval-month`に動画情報を一度に取得する期間（月）を指定します。使用するYouTube Data APIは一度に500件の動画情報までしか返しません。そのため、あたり500件以下になるように`:interval-month`を調節する必要があります。最小値は、"1"です。
+- `:work-dir`と`:log-dir`は存在しなければ自動でディレクトリを作成します。
 
 ```
 $ cat .lein-env
@@ -22,11 +29,16 @@ $ cat .lein-env
  :query-file "query.sql"
  :api-key "<<YouTube API KEY>>"
  :channel-id "<<YouTube Channel Id>>"
+ :time-zone-for-offset "9"
+;;  "now" or "yyyy/MM/dd HH:mm:ss"
+ :latest-date "<<nowまたは、期間終了日時（例：2023/04/13 23:59:59）>>"
+;;  "yyyy/MM/dd"
  :register-date "<<チャンネル登録日（例：2022/06/01）"
  :interval-month "6"
  :work-dir "work"
  :log-dir "work/log"
  :json-file "work/youtube.json"
+ :sqlite-file "work/youtube.sqlite"
  :template-file "resources/index.html.selmer"
  :html-file "work/index.html"}
 ```
