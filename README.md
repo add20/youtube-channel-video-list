@@ -48,9 +48,9 @@ $ cat .lein-env
 ```
 $ lein run -- --help
 usage:
-  -f, --fetch          fetch YouTube data
-  -l, --load           load YouTube json data to sqlite database
-  -g, --generate-html  generate html file
+  -f, --fetch          fetch YouTube data to JSON
+  -l, --load           load YouTube JSON data to SQLite database
+  -g, --generate-html  generate HTML file
   -h, --help
 ```
 
