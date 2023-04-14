@@ -34,4 +34,4 @@
 
 (def template-file (env :template-file))
 
-(def html-file (env :html-file))
+(def html-dir (env :html-dir))

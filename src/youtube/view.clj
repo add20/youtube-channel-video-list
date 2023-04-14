@@ -13,4 +13,8 @@
   (let [videos (db/select-all-videos)
         template (slurp config/template-file)
         html (selmer/render template {:videos (into [] videos)})]
-    (spit config/html-file html)))
+    (spit (str config/html-dir
+               "/"
+               (get-in (first videos) [:snippet :channelTitle])
+               ".html")
+          html)))

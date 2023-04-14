@@ -29,6 +29,7 @@
 
   (.mkdirs (io/file config/work-dir))
   (.mkdirs (io/file config/log-dir))
+  (.mkdirs (io/file config/html-dir))
   (when-not (.exists (io/file config/sqlite-file))
     (sh/sh "bash" "-c" (str "cat resources/table.sql | sqlite3 " config/sqlite-file)))
 
