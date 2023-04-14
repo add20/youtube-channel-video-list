@@ -1,6 +1,18 @@
 -- name: insert-video!
-INSERT INTO videos (videoId, publishedAt, channelId, video)
-VALUES (:videoId, :publishedAt, :channelId, :video)
+INSERT INTO videos (
+    videoId,
+    publishedAt,
+    channelId,
+    video,
+    createdAt,
+    updatedAt)
+VALUES (
+    :videoId,
+    :publishedAt,
+    :channelId,
+    :video,
+    datetime('now', 'localtime'),
+    datetime('now', 'localtime'))
 
 -- name: select-videos
 SELECT
