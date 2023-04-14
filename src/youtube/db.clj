@@ -17,11 +17,12 @@
     (try
       (insert-video! {:videoId (get-in video [:id :videoId])
                       :publishedAt (get-in video [:snippet :publishedAt])
+                      :channelId config/channel-id
                       :video (json/generate-string video {:pretty true})})
       (catch Exception e (eprintln (.getMessage e))))))
 
 (defn select-all-videos []
-  (->> (select-videos)
+  (->> (select-videos {:channelId config/channel-id})
        (map :video)
        (map #(json/parse-string %1 true))))
 
