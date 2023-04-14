@@ -62,7 +62,9 @@ usage:
 
 ## Examples
 
-...
+```
+$ lein run -- --fetch --load --generate-html > work/log/log.txt 2> work/log/err.txt
+```
 
 ## License
 
