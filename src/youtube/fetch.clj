@@ -5,12 +5,10 @@
             [youtube.config :as config]
             [youtube.date :as date]))
 
-(defn escape [str]
-  (str/replace str #"[:-]" "."))
-
-(defn log-http-body [content file-path]
-  (spit (escape (str config/log-dir "/" file-path)) content)
-  content)
+(defn log [content file-path]
+  (letfn [(escape [str] (str/replace str #"[:-]" "."))]
+    (spit (escape (str config/log-dir "/" file-path)) content)
+    content))
 
 (defn query-string [params]
   (->> params
@@ -32,9 +30,9 @@
     (println (str base-url "?" (query-string params)))
     (-> (http/get base-url {:query-params params})
         :body
-        (log-http-body (str "search?"
-                            (query-string (select-keys params [:publishedAfter :publishedBefore :pageToken]))
-                            ".json"))
+        (log (str "search?"
+                  (query-string (select-keys params [:publishedAfter :publishedBefore :pageToken]))
+                  ".json"))
         (json/parse-string true))))
 
 (defn get-channel-videos [api-key channel-id start end]
