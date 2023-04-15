@@ -1,10 +1,9 @@
 (ns youtube.fetch
   (:require [cheshire.core :as json]
             [clj-http.client :as http]
-            [clj-time.core :as t]
-            [clj-time.format :as f]
             [clojure.string :as str]
-            [youtube.config :as config]))
+            [youtube.config :as config]
+            [youtube.date :as date]))
 
 (defn json-read-str [json-str]
   (json/parse-string json-str true))
@@ -52,22 +51,8 @@
         (recur result-videos next-page-token)
         result-videos))))
 
-(defn format-date [date]
-  (str (f/unparse (f/formatter "yyyy-MM-dd") date)
-       "T"
-       (f/unparse (f/formatter "HH:mm:ss") date)
-       "Z"))
-
-(def days (let [s (->> config/latest-date
-                       (iterate #(t/minus %1 (t/months config/interval-month)))
-                       (take-while #(t/after? %1 config/register-date)))
-                v (conj (into [] s) config/register-date)]
-            (map format-date v)))
-
-(def periods (map vector (next days) days))
-
 (defn get-all-channel-videos [api-key channel-id]
-  (->> periods
+  (->> date/periods
        (map (fn [[start end]]
               (get-channel-videos api-key channel-id start end)))
        (apply concat)))
