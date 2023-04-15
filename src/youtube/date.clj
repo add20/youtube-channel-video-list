@@ -9,10 +9,15 @@
        (f/unparse (f/formatter "HH:mm:ss") date)
        "Z"))
 
-(def days (let [s (->> config/latest-date
-                       (iterate #(t/minus %1 (t/months config/interval-month)))
-                       (take-while #(t/after? %1 config/register-date)))
-                v (conj (into [] s) config/register-date)]
-            (map format-date v)))
+(defn dates-between [start end interval]
+  (let [s (->> end
+               (iterate #(t/minus %1 (t/months interval)))
+               (take-while #(t/after? %1 start)))
+        v (conj (into [] s) start)]
+    (map format-date v)))
 
-(def periods (map vector (next days) days))
+(def periods
+  (let [dates (dates-between config/register-date
+                             config/latest-date
+                             config/interval-month)]
+    (map vector (next dates) dates)))
