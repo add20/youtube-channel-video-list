@@ -20,7 +20,7 @@ $ bash resources/setup.sh
 - `:channel-id`に検索したいYouTubeチャンネルのチャンネルIDを書きます。
 - `:latest-date`には現在日時を表す"now"か取得する動画期間の終了日時を書きます。フォーマットは、"yyyy/MM/dd HH:mm:ss"です。
 - `:register-date`にはチャンネル登録日を書きます。もしくは、取得する動画期間の開始日を書きます。フォーマットは、"yyyy/MM/dd"です。
-- `:interval-month`に動画情報を一度に取得する期間（月）を指定します。使用するYouTube Data APIは一度に500件の動画情報までしか返しません。そのため、あたり500件以下になるように`:interval-month`を調節する必要があります。最小値は、"1"です。
+- `:interval-month`に動画情報を一度に取得する期間（月）を指定します。使用するYouTube Data APIは一度に500件の動画情報までしか返しません。そのため、`:interval-month`あたり500件以下になるように`:interval-month`を調節する必要があります。最小値は、"1"です。
 - `:work-dir`と`:log-dir`と`:html-dir`は存在しなければ自動でディレクトリを作成します。
 
 ```
@@ -57,9 +57,9 @@ usage:
 
 ## Options
 
-`--fetch`オプションでYouTubeから動画一覧をダウンロードしてJSONファイルに保存します。
-`--load`オプションで保存したJSONファイルのデータをsqliteに保存します。
-`--generate-html`オプションでsqliteに保存された動画情報をHTMLに書き出します。
+- `--fetch`オプションでYouTubeから動画一覧をダウンロードしてJSONファイルに保存します。
+- `--load`オプションで保存したJSONファイルのデータをsqliteに保存します。
+- `--generate-html`オプションでsqliteに保存された動画情報をHTMLに書き出します。
 
 ## Examples
 
