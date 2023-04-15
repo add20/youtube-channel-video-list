@@ -13,14 +13,16 @@
 
 (def time-zone-for-offset (Long/parseLong (env :time-zone-for-offset)))
 
+(defn parse-format [format date-str]
+  (-> (f/parse (f/formatter format) date-str)
+      (t/from-time-zone (t/time-zone-for-offset time-zone-for-offset))))
+
 (def latest-date (let [s (env :latest-date)]
                    (if (= s "now")
                      (t/now)
-                     (-> (f/parse (f/formatter "yyyy/MM/dd HH:mm:ss") s)
-                         (t/from-time-zone (t/time-zone-for-offset time-zone-for-offset))))))
+                     (parse-format "yyyy/MM/dd HH:mm:ss" s))))
 
-(def register-date (-> (f/parse (f/formatter "yyyy/MM/dd") (env :register-date))
-                       (t/from-time-zone (t/time-zone-for-offset time-zone-for-offset))))
+(def register-date (parse-format "yyyy/MM/dd" (env :register-date)))
 
 (def interval-month (Long/parseLong (env :interval-month)))
 

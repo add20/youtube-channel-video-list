@@ -4,9 +4,10 @@
 
 ## Installation
 
-このプロジェクトではsqliteを使用します。
+このプロジェクトではSQLiteを使用します。
 
 ```
+$ brew install leiningen
 $ brew install sqlite
 $ git clone https://github.com/add20/youtube-channel-video-list.git
 $ cd youtube-channel-video-list
@@ -33,7 +34,7 @@ $ cat .lein-env
 ;;  "now" or "yyyy/MM/dd HH:mm:ss"
  :latest-date "<<nowまたは、期間終了日時（例：2023/04/13 23:59:59）>>"
 ;;  "yyyy/MM/dd"
- :register-date "<<チャンネル登録日（例：2022/06/01）"
+ :register-date "<<チャンネル登録日（例：2022/06/01）>>"
  :interval-month "6"
  :work-dir "work"
  :log-dir "work/log"
