@@ -5,9 +5,6 @@
             [youtube.config :as config]
             [youtube.date :as date]))
 
-(defn json-read-str [json-str]
-  (json/parse-string json-str true))
-
 (defn escape [str]
   (str/replace str #"[:-]" "."))
 
@@ -38,7 +35,7 @@
         (log-http-body (str "search?"
                             (query-string (select-keys params [:publishedAfter :publishedBefore :pageToken]))
                             ".json"))
-        json-read-str)))
+        (json/parse-string true))))
 
 (defn get-channel-videos [api-key channel-id start end]
   (loop [videos []
