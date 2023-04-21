@@ -16,9 +16,9 @@
        (map (fn [[k v]] (str (name k) "=" v)))
        (str/join "&")))
 
-(defn fetch-youtube-data [api-key channel-id page-token start end]
+(defn fetch-channel-video-ids [api-key channel-id page-token start end]
   (let [base-url "https://www.googleapis.com/youtube/v3/search"
-        params {:part "snippet"
+        params {:part "id"
                 :key api-key
                 :channelId channel-id
                 :type "video"
@@ -35,22 +35,43 @@
                             ".json"))
         (json/parse-string true))))
 
-(defn get-channel-videos [api-key channel-id start end]
-  (loop [videos []
+(defn get-all-page-channel-video-ids [api-key channel-id start end]
+  (loop [video-ids []
          page-token nil]
-    (let [data (fetch-youtube-data api-key channel-id page-token start end)
-          items (:items data)
+    (let [data (fetch-channel-video-ids api-key channel-id page-token start end)
+          ids (map #(get-in %1 [:id :videoId]) (:items data))
           next-page-token (:nextPageToken data)
-          result-videos (concat videos items)]
-      (printf "items count is %d.\n" (count items))
+          result-video-ids (concat video-ids ids)]
+      (printf "ids count is %d.\n" (count ids))
       (if next-page-token
-        (recur result-videos next-page-token)
-        result-videos))))
+        (recur result-video-ids next-page-token)
+        result-video-ids))))
 
-(defn get-all-channel-videos [api-key channel-id]
+(defn get-all-period-channel-video-ids [api-key channel-id]
   (->> date/periods
        (map (fn [[start end]]
-              (get-channel-videos api-key channel-id start end)))
+              (get-all-page-channel-video-ids api-key channel-id start end)))
+       (apply concat)))
+
+(defn fetch-channel-videos [api-key id]
+  (let [base-url "https://www.googleapis.com/youtube/v3/videos"
+        params {:part "id,snippet,statistics"
+                :key api-key
+                :id id}]
+    (println (str base-url "?" (query-string params)))
+    (-> (http/get base-url {:query-params params})
+        :body
+        ;; don't include log file name 'id', because occur 'File name too long' error.
+        (json/parse-string true))))
+
+(defn get-all-channel-videos [api-key channel-id]
+  (->> (get-all-period-channel-video-ids api-key channel-id)
+       distinct
+       (partition-all 50)
+       (map #(->> %1
+                  (str/join ",")
+                  (fetch-channel-videos api-key)
+                  :items))
        (apply concat)))
 
 (def channel-videos
