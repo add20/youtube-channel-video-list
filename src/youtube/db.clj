@@ -21,8 +21,8 @@
                       :video (json/generate-string video {:pretty true})})
       (catch Exception e (eprintln (.getMessage e))))))
 
-(defn select-all-videos []
-  (->> (select-videos {:channelId config/channel-id})
+(defn select-all-videos [channel-id]
+  (->> (select-videos {:channelId channel-id})
        (map :video)
        (map #(json/parse-string %1 true))))
 

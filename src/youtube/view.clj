@@ -15,7 +15,7 @@
 (selmer/add-filter! :comma-number comma-number)
 
 (defn generate-html []
-  (let [videos (db/select-all-videos)
+  (let [videos (db/select-all-videos config/channel-id)
         template (slurp config/template-file)
         html (selmer/render template {:videos (into [] videos)})]
     (spit (str config/html-dir
