@@ -29,7 +29,10 @@
     <div class="video">
         <a href="{{video.id.videoId|video-url}}"><img src="{{video.snippet.thumbnails.medium.url}}" alt="{{video.snippet.title}}"></a><br>
         <a href="{{video.id.videoId|video-url}}">{{video.snippet.title}}</a><br>
-        公開日時：{{video.snippet.publishedAt}}
+        公開日時：{{video.snippet.publishedAt}}<br>
+        再生回数：{{video.statistics.viewCount}}<br>
+        高く評価：{{video.statistics.likeCount}}<br>
+        コメント数：{{video.statistics.commentCount}}
     </div>
     {% endfor %}
     </main>

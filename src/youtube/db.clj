@@ -15,7 +15,7 @@
 (defn insert-all-videos [videos]
   (doseq [video videos]
     (try
-      (insert-video! {:videoId (get-in video [:id :videoId])
+      (insert-video! {:videoId (get-in video [:id])
                       :publishedAt (get-in video [:snippet :publishedAt])
                       :channelId (get-in video [:snippet :channelId])
                       :video (json/generate-string video {:pretty true})})
