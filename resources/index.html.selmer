@@ -8,7 +8,7 @@
     <title>{{videos.0.snippet.channelTitle}} 動画一覧</title>
     <link rel="icon" href="favicon.ico" type="image/png">
     <style>
-    .main {
+    #main {
         display: flex;
         flex-wrap: wrap;
     }
@@ -18,21 +18,51 @@
         width: {{videos.0.snippet.thumbnails.medium.width}}px;
     }
     </style>
+
+    <script>
+    function convert(itemprop, text) {
+        if (itemprop === "publishedAt") {
+            return Date.parse(text);
+        } else {
+            return Number.parseInt(text.replace(/,/g, ''));
+        }
+    }
+
+    function changeOrder(itemprop) {
+        var main = document.getElementById("main");
+        var videos = main.getElementsByClassName("video");
+        Array
+            .from(videos)
+            .map((video) => {
+                var text = video.querySelector(`[itemprop=${itemprop}]`).innerText
+                var value = convert(itemprop, text);
+                return {dom: video, value: value};
+            })
+            .sort((a, b) => b.value - a.value)
+            .forEach((v) => main.appendChild(v.dom));
+    }
+    </script>
 </head>
 
 <body>
     <header>
         <h1>{{videos.0.snippet.channelTitle}} 動画一覧</h1>
     </header>
-    <main class="main">
+    <div id="buttons">
+        <button type="button" onclick="changeOrder('publishedAt')">公開日時順</button>
+        <button type="button" onclick="changeOrder('viewCount')">再生回数順</button>
+        <button type="button" onclick="changeOrder('likeCount')">評価順</button>
+        <button type="button" onclick="changeOrder('commentCount')">コメント数順</button>
+    </div>
+    <main id="main">
     {% for video in videos %}
     <div class="video">
-        <a href="{{video.id.videoId|video-url}}"><img src="{{video.snippet.thumbnails.medium.url}}" alt="{{video.snippet.title}}"></a><br>
-        <a href="{{video.id.videoId|video-url}}">{{video.snippet.title}}</a><br>
-        公開日時：{{video.snippet.publishedAt}}<br>
-        再生回数：{{video.statistics.viewCount}}<br>
-        高く評価：{{video.statistics.likeCount}}<br>
-        コメント数：{{video.statistics.commentCount}}
+        <a href="{{video.id|video-url}}"><img src="{{video.snippet.thumbnails.medium.url}}" alt="{{video.snippet.title}}"></a><br>
+        <a href="{{video.id|video-url}}">{{video.snippet.title}}</a><br>
+        公開日時：<span itemprop="publishedAt">{{video.snippet.publishedAt}}</span><br>
+        再生回数：<span itemprop="viewCount">{{video.statistics.viewCount|comma-number}}</span><br>
+        高く評価：<span itemprop="likeCount">{{video.statistics.likeCount|comma-number}}</span><br>
+        コメント数：<span itemprop="commentCount">{{video.statistics.commentCount|comma-number}}</span>
     </div>
     {% endfor %}
     </main>
