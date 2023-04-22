@@ -1,7 +1,6 @@
 (ns youtube.config
   (:require [environ.core :refer [env]]
-            [clj-time.core :as t]
-            [clj-time.format :as f]))
+            [youtube.date :as date]))
 
 (def database-url (env :database-url))
 
@@ -11,18 +10,16 @@
 
 (def channel-id (env :channel-id))
 
-(def time-zone-for-offset (Long/parseLong (env :time-zone-for-offset)))
-
-(defn parse-format [format date-str]
-  (-> (f/parse (f/formatter format) date-str)
-      (t/from-time-zone (t/time-zone-for-offset time-zone-for-offset))))
-
 (def latest-date (let [s (env :latest-date)]
                    (if (= s "now")
-                     (t/now)
-                     (parse-format "yyyy/MM/dd HH:mm:ss" s))))
+                     (date/now)
+                     (date/parse-local "yyyy/MM/dd HH:mm:ss" s))))
 
-(def register-date (parse-format "yyyy/MM/dd" (env :register-date)))
+;; config register-date pattern is 'yyyy/MM/dd'
+;; ZonedDateTime needs Time (HH:mm:ss)
+(def register-date
+  (date/parse-local "yyyy/MM/dd HH:mm:ss"
+                    (str (env :register-date) " 00:00:00")))
 
 (def interval-month (Long/parseLong (env :interval-month)))
 
