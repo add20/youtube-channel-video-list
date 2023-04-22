@@ -59,7 +59,7 @@
     <div class="video">
         <a href="{{video.id|video-url}}"><img src="{{video.snippet.thumbnails.medium.url}}" alt="{{video.snippet.title}}"></a><br>
         <a href="{{video.id|video-url}}">{{video.snippet.title}}</a><br>
-        公開日時：<span itemprop="publishedAt">{{video.snippet.publishedAt}}</span><br>
+        公開日時：<span itemprop="publishedAt">{{video.snippet.publishedAt|from-youtube-format}}</span><br>
         再生回数：<span itemprop="viewCount">{{video.statistics.viewCount|comma-number}}</span><br>
         高く評価：<span itemprop="likeCount">{{video.statistics.likeCount|comma-number}}</span><br>
         コメント数：<span itemprop="commentCount">{{video.statistics.commentCount|comma-number}}</span>

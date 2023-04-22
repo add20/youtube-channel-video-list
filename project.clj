@@ -9,7 +9,6 @@
                  [clj-http "3.12.3"]
                  [cheshire "5.11.0"]
                  [selmer "1.12.58"]
-                 [clj-time "0.15.2"]
                  [yesql "0.5.3"]
                  [org.xerial/sqlite-jdbc "3.36.0.3"]]
   :main ^:skip-aot youtube.core

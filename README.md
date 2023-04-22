@@ -30,7 +30,6 @@ $ cat .lein-env
  :query-file "query.sql"
  :api-key "<<YouTube API KEY>>"
  :channel-id "<<YouTube Channel Id>>"
- :time-zone-for-offset "9"
 ;;  "now" or "yyyy/MM/dd HH:mm:ss"
  :latest-date "<<nowまたは、期間終了日時（例：2023/04/13 23:59:59）>>"
 ;;  "yyyy/MM/dd"

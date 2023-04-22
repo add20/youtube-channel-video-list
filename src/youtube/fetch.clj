@@ -48,7 +48,7 @@
         result-video-ids))))
 
 (defn get-all-period-channel-video-ids [api-key channel-id]
-  (->> date/periods
+  (->> (date/periods config/register-date config/latest-date config/interval-month)
        (map (fn [[start end]]
               (get-all-page-channel-video-ids api-key channel-id start end)))
        (apply concat)))
