@@ -9,7 +9,7 @@
 
 (defn comma-number [n-str]
   (when n-str
-    (format "%,d" (Integer/parseInt n-str))))
+    (format "%,d" (Long/parseLong n-str))))
 
 (selmer/add-filter! :video-url video-url)
 (selmer/add-filter! :comma-number comma-number)
