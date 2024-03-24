@@ -11,7 +11,6 @@ $ brew install leiningen
 $ brew install sqlite
 $ git clone https://github.com/add20/youtube-channel-video-list.git
 $ cd youtube-channel-video-list
-$ bash resources/setup.sh
 ```
 
 設定ファイル`.lein-env`を用意します。
